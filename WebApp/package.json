@@ -1,0 +1,15 @@
+{
+  "name": "web-app",
+  "version": "0.0.0",
+  "description": "WebApp",
+  "main": "server.js",
+  "author": {
+    "name": "person"
+  },
+  "dependencies": {
+    "express": "^4.16.3",
+    "moment": "^2.22.1",
+    "socket.io": "^2.1.0",
+    "superagent": "^3.8.2"
+  }
+}
