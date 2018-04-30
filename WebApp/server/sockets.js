@@ -7,9 +7,6 @@ module.exports = (server) =>
         io = require('socket.io')(server),
         moment = require('moment')
 
-    let users = []
-    const messages = []
-
     io.on('connection', socket => 
     {
         // 1. Make sure the username is unique 
@@ -91,54 +88,56 @@ module.exports = (server) =>
             }
         })
 
-        socket.on('send-message', data => {
-
+        // 1. Make a search call to the OpenFDA API
+        // 2. Save the search results into records array
+        // 3. Save the search info to database 
+        // 4. Emit sucessful search
+        socket.on('send-search', data => 
+        {
             let records = []
 
-            fetch.records(data.message).then((results) => {
+             // 1. Make a search call to the OpenFDA API
+            fetch.records(data.search).then((results) => {
 
                 results.forEach(record => {
                     let inividual_reactions = []
                     record.patient.reaction.forEach(element => {
                         inividual_reactions.push(element.reactionmeddrapt)
                     })
+                    // 2. Save the search results into records array
                     records.push(inividual_reactions)
                 })
 
-                const content = {
-                    user: data.user,
-                    message: data.message,
-                    date: moment(new Date()).format('MM/DD/YY h:mm a'),
-                    avatar: `https://robohash.org/${data.user.name}?set=set3`,
-                    records: records
-                }
-                messages.push(content)
-
-                let obj = {
-                    Name: data.message
+                // 3. Save the search info to database 
+                let drug = {
+                    Name: data.search
                 }
 
                 let users = persistence.get_request("http://localhost:63075/api/users/")
 
-                console.log()
-                console.log(users)
-                console.log(data.user)
-
-                let id = 1
+                let userId = 1
                 users.forEach(element => {
                     if (element.name == data.user.name)
-                        id = element.userId
+                        userId = element.userId
                 })
 
-                persistence.put_request("http://localhost:63075/api/drugs/" + id, obj)
+                persistence.put_request("http://localhost:63075/api/drugs/" + userId, drug)
 
+                // 4. Emit sucessful search
+                const content = {
+                    user: data.user,
+                    search: data.search,
+                    date: moment(new Date()).format('MM/DD/YY h:mm a'),
+                    avatar: `https://robohash.org/${data.user.name}?set=set3`,
+                    records: records
+                }
 
-                io.emit('successful-message', content)
+                io.emit('successful-search', content)
             })
-
-
         })
+
         socket.on('disconnect', () => {
+            let users = []
             users = users.filter(user => {
                 return user.id != socket.id
             })

@@ -65,7 +65,7 @@ const app = new Vue({
             if (!this.message)
                 return
 
-            socket.emit('send-message', { message: this.message, user: this.user })
+            socket.emit('send-search', { search: this.message, user: this.user })
         }, 
         validateUser: function () {
             let obj = {
@@ -120,8 +120,8 @@ socket.on('successful-validation', user => {
     app.users.push(user)
 })
 
-socket.on('successful-message', content => {
-    app.message = content.message
+socket.on('successful-search', content => {
+    app.message = content.search
     app.messages.push(content)
     app.records = content.records
 })
