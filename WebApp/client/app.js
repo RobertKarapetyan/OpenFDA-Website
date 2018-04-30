@@ -1,3 +1,4 @@
+// Components
 const recordsComponent = {
     template: ` <div class="chat-box">
                     <ul>
@@ -14,20 +15,6 @@ const recordsComponent = {
     props: ['content']  
 }
 
-const usersComponent = {
-    template: ` <div class="user-list">
-                   <h6>Active Users ({{users.length}})</h6>
-                   <ul v-for="user in users">
-                       <li>
-                       <img class="image is-24x24" width="30px" v-bind:src="user.avatar">
-                            <span>{{user.name}}</span>
-                       </li>
-                       <hr>
-                   </ul>
-               </div>`,
-    props: ['users']
-}
-
 const welcomeComponent = {
     template: ` 
     <h1 v-if="user.name != null">
@@ -39,6 +26,7 @@ const welcomeComponent = {
     props: ['user']
 }
 
+// Vue Startup + Socket Handling
 const socket = io()
 const app = new Vue({
     el: '#chat-app',
@@ -46,12 +34,11 @@ const app = new Vue({
         loggedIn: false,
         userName: '',
         user: {},
-        users: [],
         drugName: '',
         errorMessage: '', 
         password: '', 
-        record: ["a", "b", "c"], 
-        list: []
+        list: [], 
+        recentSearches: []
     },
     methods: {
         joinUser: function () {
@@ -69,6 +56,8 @@ const app = new Vue({
             if (!this.drugName)
                 return
 
+            this.recentSearches.push(this.drugName)
+
             socket.emit('send-search', { search: this.drugName, user: this.user })
         }, 
         validateUser: function () {
@@ -77,13 +66,9 @@ const app = new Vue({
                 password: this.password
             }
             socket.emit('validate-user', obj)
-        }, 
-        showRecord: function() {
-            console.log("In showRecord")
         }
     },
     components: {
-        'users-component': usersComponent,
         'records-component': recordsComponent,
         'welcome-component': welcomeComponent
     }
@@ -95,8 +80,6 @@ socket.on('successful-join', user => {
         app.loggedIn = true
         app.password = user.password
     }
-
-    app.users.push(user)
 })
 
 socket.on('failed-join', element => {
@@ -109,7 +92,6 @@ socket.on('successful-validation', user => {
         app.loggedIn = true
         app.password = user.password
     }
-    app.users.push(user)
 })
 
 socket.on('failed-validation', element => {

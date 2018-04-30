@@ -9,7 +9,7 @@ hr {
 
 /* LEFT COLUMN STYLES */
 .col.s3 {
-    background: #2a2f43;
+    background: #036207;
     border-top: 10px solid #278ca8;
     color: #ffffff;
     font-family: 'Rajdhani', sans-serif;
@@ -48,14 +48,15 @@ hr {
 }
 
 .col.s9 button {
-    background: green;
+    background: #05723f;
+    color: white
 }
 
 /* USER LIST STYLES */
 
 .user-login {
     position: absolute;
-    bottom: 10px;
+    bottom: 200px;
 }
 .user-list, .user-login {
     padding: 10px .75rem;
@@ -84,7 +85,7 @@ hr {
 
 /* CHAT BOX STYLES */
 .chat-box {
-    background:rgb(0, 247, 255);
+    background:transparent;
     border-radius: 4px;
     margin: 25px 5px;
     min-height: 200px;

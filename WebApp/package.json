@@ -1,15 +1,18 @@
 {
-  "name": "web-app",
-  "version": "0.0.0",
-  "description": "WebApp",
-  "main": "server.js",
-  "author": {
-    "name": "person"
-  },
+  "name": "webapp",
+  "version": "1.0.0",
+  "description": "A school project",
+  "main": "FetchCommands.js",
   "dependencies": {
     "express": "^4.16.3",
     "moment": "^2.22.1",
     "socket.io": "^2.1.0",
     "superagent": "^3.8.2"
-  }
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "ken shimauchi, robert karapetyan, ka yeung, avik ghazarian, sharokh pournazari, benjamin valadez, juan perez",
+  "license": "ISC"
 }

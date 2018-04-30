@@ -1,6 +1,10 @@
 const persistence = require('./Persistence')
 const fetch = require('../FetchCommands')
 
+let usersURL = "http://localhost:63075/api/users/"
+let drugsURL = "http://localhost:63075/api/drugs/"
+let avatarURL = "https://api.adorable.io/avatars/285/"
+
 module.exports = (server) => 
 {
     const
@@ -23,7 +27,8 @@ module.exports = (server) =>
             
             users.forEach(element => 
             {
-                if (element.name.toUpperCase() === user.userName.toUpperCase()) 
+                if (element.name.toUpperCase() === 
+                user.userName.toUpperCase()) 
                     isDuplicate = true
             })
             
@@ -33,7 +38,7 @@ module.exports = (server) =>
                     id: socket.id,
                     name: user.userName,
                     matched: isDuplicate, 
-                    avatar: `https://robohash.org/${user.userName}?set=set3`, 
+                    avatar: `${avatarURL}${user.userName}@adorable.io`, 
                     Password: user.password 
                 }
                 
@@ -41,7 +46,7 @@ module.exports = (server) =>
 
                 // 2. Save the user into database 
                 persistence.
-                    put_request("http://localhost:63075/api/users/", memeber)
+                    put_request(usersURL, memeber)
     
                 io.emit('successful-join', memeber)
             }
@@ -57,7 +62,7 @@ module.exports = (server) =>
         // 3. Otherwise, emit failed validation
         socket.on('validate-user', user =>
         {
-            let users = persistence.get_request("http://localhost:63075/api/users/")
+            let users = persistence.get_request(usersURL)
 
             // 1. Make sure the user is in the database
             let isUser = false
@@ -75,7 +80,7 @@ module.exports = (server) =>
                     id: socket.id,
                     name: user.userName,
                     matched: isUser, 
-                    avatar: `https://robohash.org/${user.userName}?set=set3`, 
+                    avatar: `${avatarURL}${user.userName}@adorable.io`, 
                     Password: user.password 
                 }
                 // 2. Emit successful validation if user
@@ -113,7 +118,7 @@ module.exports = (server) =>
                     Name: data.search
                 }
 
-                let users = persistence.get_request("http://localhost:63075/api/users/")
+                let users = persistence.get_request(usersURL)
 
                 let userId = 1
                 users.forEach(element => {
@@ -121,14 +126,14 @@ module.exports = (server) =>
                         userId = element.userId
                 })
 
-                persistence.put_request("http://localhost:63075/api/drugs/" + userId, drug)
+                persistence.put_request(drugsURL + userId, drug)
 
                 // 4. Emit sucessful search
                 const content = {
                     user: data.user,
                     search: data.search,
                     date: moment(new Date()).format('MM/DD/YY h:mm a'),
-                    avatar: `https://robohash.org/${data.user.name}?set=set3`,
+                    avatar: `${avatarURL}${data.user.name}@adorable.io`,
                     records: records
                 }
 
@@ -146,6 +151,3 @@ module.exports = (server) =>
         })
     })
 }
-
-
-

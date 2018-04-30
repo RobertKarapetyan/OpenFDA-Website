@@ -32,17 +32,35 @@
          <div class="col s3">
             <!-- active users component-->
             <welcome-component v-bind:user="user"></welcome-component>
-            <users-component v-bind:users="users"></users-component>
+           
+            <br/>
+            <h4 v-if="recentSearches.length != 0">
+              &nbsp Recent Searches
+            </h4>
 
-            <!-- start user join -->
+            <ul>
+              <li
+                  v-for="item in recentSearches"
+              >               
+              &nbsp {{item}}
+              </li>
+          </ul>
+
+            <div v-show="!loggedIn">
+                &nbsp <img src="img/banner.jpg">
+            </div>
+
             <div class="user-login" v-show="!loggedIn">
                <input v-model="userName" placeholder="name" type="text" class="u-full-width">
                <br/>
                <input v-model="password" placeholder="password" type="text" class="u-full-width">
+               
+                <br/>
+                <br/>
                <button v-on:click="joinUser" :disabled="!userName" class="btn-small waves-effect waves-light" type="submit">
                   Sign Up 
                </button>
-               <br/> <br/>
+               &nbsp &nbsp 
                <button v-on:click="validateUser" :disabled="!password" class="btn-small waves-effect waves-light" type="submit">
                   Login 
                </button>
@@ -57,10 +75,7 @@
           
             <!-- chat box -->
             <records-component v-bind:content="list"></records-component>
-
-            <br/>
            
-            <div v-bind:list=list>
               <ul>
                 <li
                     v-for="item in list"
@@ -71,7 +86,7 @@
                     </p>
                 </li>
             </ul>
-            </div>
+            
               
          
               <!--v-if="item.selected"-->
