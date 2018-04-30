@@ -8,7 +8,6 @@ const chatComponent = {
     props: ['content']
 }
 
-// Users Component
 const usersComponent = {
     template: ` <div class="user-list">
                    <h6>Active Users ({{users.length}})</h6>
@@ -23,7 +22,6 @@ const usersComponent = {
     props: ['users']
 }
 
-// Welcome Component
 const welcomeComponent = {
     template: ` 
     <h1 v-if="user.name != null">
@@ -43,8 +41,7 @@ const app = new Vue({
         userName: '',
         user: {},
         users: [],
-        message: '',
-        messages: [], 
+        drugName: '',
         errorMessage: '', 
         password: '', 
         records: []
@@ -62,10 +59,10 @@ const app = new Vue({
             socket.emit('join-user', obj)
         },
         search: function () {
-            if (!this.message)
+            if (!this.drugName)
                 return
 
-            socket.emit('send-search', { search: this.message, user: this.user })
+            socket.emit('send-search', { search: this.drugName, user: this.user })
         }, 
         validateUser: function () {
             let obj = {
@@ -82,23 +79,6 @@ const app = new Vue({
     }
 })
 
-
-// Client Side Socket Event
-/* socket.on('refresh-messages', messages => {
-    app.messages = messages
-})
-socket.on('refresh-users', users => {
-    app.users = users
-}) */
-
-socket.on('failed-join', element => {
-    app.errorMessage = element
-})
-
-socket.on('failed-validation', element => {
-    app.errorMessage = element
-})
-
 socket.on('successful-join', user => {
     if (user.name === app.userName) {
         app.user = user
@@ -106,9 +86,11 @@ socket.on('successful-join', user => {
         app.password = user.password
     }
 
-    console.log(user)
-
     app.users.push(user)
+})
+
+socket.on('failed-join', element => {
+    app.errorMessage = element
 })
 
 socket.on('successful-validation', user => {
@@ -120,8 +102,11 @@ socket.on('successful-validation', user => {
     app.users.push(user)
 })
 
+socket.on('failed-validation', element => {
+    app.errorMessage = element
+})
+
 socket.on('successful-search', content => {
-    app.message = content.search
-    app.messages.push(content)
+    app.drugName = content.search
     app.records = content.records
 })

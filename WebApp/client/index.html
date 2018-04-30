@@ -51,17 +51,17 @@
          </div>
 
 
-         <!-- message box column-->
+         <!-- drugName box column-->
          <div class="col s9" v-show="loggedIn">
 
           
             <!-- chat box -->
             <chat-component v-bind:content="records"></chat-component>
 
-            <!-- start form to send new message to chat box -->
+            <!-- start form to send new drugName to chat box -->
             <div class="controls" class="field has-addons">
-               <input v-model="message" placeholder="write message" type="text" class="u-full-width">
-               <button v-on:click="search" :disabled="!message" class="btn-small waves-effect waves-light" type="submit">
+               <input v-model="drugName" placeholder="write drugName" type="text" class="u-full-width">
+               <button v-on:click="search" :disabled="!drugName" class="btn-small waves-effect waves-light" type="submit">
                   <i class="material-icons left">send</i>search
                </button>
             </div>
