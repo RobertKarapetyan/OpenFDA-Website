@@ -9,6 +9,7 @@ const recordsComponent = {
                             <button v-on:click="item['selected'] = !item['selected']" type="submit">
                                 {{ item.name }}
                             </button>
+                            <br/> <br/>
                         </li>
                     </ul>
                </div>`,

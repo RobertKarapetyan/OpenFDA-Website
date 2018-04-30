@@ -1,6 +1,10 @@
 /* GENERAL STYLES */
 #chat-app {
-    background: #efefef;
+    background:#afb9d4;
+}
+
+#white {
+    backround: rgb(161, 195, 226)
 }
 
 hr {
@@ -9,7 +13,7 @@ hr {
 
 /* LEFT COLUMN STYLES */
 .col.s3 {
-    background: #036207;
+    background: #193275;
     border-top: 10px solid #278ca8;
     color: #ffffff;
     font-family: 'Rajdhani', sans-serif;
@@ -48,7 +52,7 @@ hr {
 }
 
 .col.s9 button {
-    background: #05723f;
+    background: #193275;
     color: white
 }
 
@@ -88,8 +92,8 @@ hr {
     background:transparent;
     border-radius: 4px;
     margin: 25px 5px;
-    min-height: 200px;
-    max-height: 200px;
+    min-height: 300px;
+    max-height: 300px;
     padding: 10px;
     overflow-y: auto;
 }
