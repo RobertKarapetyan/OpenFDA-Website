@@ -48,7 +48,7 @@ hr {
 }
 
 .col.s9 button {
-    background: #2a2f43;
+    background: green;
 }
 
 /* USER LIST STYLES */
@@ -84,11 +84,11 @@ hr {
 
 /* CHAT BOX STYLES */
 .chat-box {
-    background: #FFFFFF;
+    background:rgb(0, 247, 255);
     border-radius: 4px;
     margin: 25px 5px;
-    min-height: 500px;
-    max-height: 500px;
+    min-height: 200px;
+    max-height: 200px;
     padding: 10px;
     overflow-y: auto;
 }

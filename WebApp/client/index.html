@@ -56,7 +56,25 @@
 
           
             <!-- chat box -->
-            <chat-component v-bind:content="records"></chat-component>
+            <records-component v-bind:content="list"></records-component>
+
+            <br/>
+           
+            <div v-bind:list=list>
+              <ul>
+                <li
+                    v-for="item in list"
+                    :key="item.id"
+                >
+                    <p v-if="item.selected">
+                      <span v-html="item.text"></span>
+                    </p>
+                </li>
+            </ul>
+            </div>
+              
+         
+              <!--v-if="item.selected"-->
 
             <!-- start form to send new drugName to chat box -->
             <div class="controls" class="field has-addons">

@@ -1,11 +1,17 @@
-// Chat Component
-const chatComponent = {
+const recordsComponent = {
     template: ` <div class="chat-box">
-                   <p>
-                    {{content}} 
-                   </p>
+                    <ul>
+                        <li
+                            v-for="item in content"
+                            :key="item.id"
+                        >
+                            <button v-on:click="item['selected'] = !item['selected']" type="submit">
+                                {{ item.name }}
+                            </button>
+                        </li>
+                    </ul>
                </div>`,
-    props: ['content']
+    props: ['content']  
 }
 
 const usersComponent = {
@@ -44,7 +50,8 @@ const app = new Vue({
         drugName: '',
         errorMessage: '', 
         password: '', 
-        records: []
+        record: ["a", "b", "c"], 
+        list: []
     },
     methods: {
         joinUser: function () {
@@ -70,11 +77,14 @@ const app = new Vue({
                 password: this.password
             }
             socket.emit('validate-user', obj)
+        }, 
+        showRecord: function() {
+            console.log("In showRecord")
         }
     },
     components: {
         'users-component': usersComponent,
-        'chat-component': chatComponent,
+        'records-component': recordsComponent,
         'welcome-component': welcomeComponent
     }
 })
@@ -108,5 +118,32 @@ socket.on('failed-validation', element => {
 
 socket.on('successful-search', content => {
     app.drugName = content.search
+
+    console.log(content.records)
+    console.log()
+
+    let i = 0
+    let list = []
+    content.records.forEach(element => {
+        let obj = {
+            id: 0, 
+            record: [], 
+            name: '',
+            selected: false, 
+            text: ''
+        }
+        obj.id = i++
+        obj.record = element
+        obj.name = 'Record ' + i
+        
+        obj.text += "<h3>" + obj.name  + "</h3>"
+        obj.record.forEach(element => {
+            obj.text += "<p>" + element  + "</p>"
+        })
+
+        list.push(obj)  
+    })
+
+    app.list = list
     app.records = content.records
 })
