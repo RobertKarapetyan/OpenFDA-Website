@@ -36,10 +36,8 @@ namespace PersistenceLayer
                 DbContextOptionsBuilder optionsBuilder)
 
             {
-                optionsBuilder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;
+                optionsBuilder.UseSqlServer(@"Server=(localdb)\ProjectsV13;
                     Database=FinalProject;Trusted_Connection=True");
-                //optionsBuilder.UseSqlServer(@"Server=(localdb)\ProjectsV13;
-                //    Database=FinalProject;Trusted_Connection=True");
             }
         }
     }

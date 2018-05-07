@@ -1,9 +1,9 @@
 const persistence = require('./Persistence')
 const fetch = require('../FetchCommands')
 
-let usersURL = "http://localhost:63075/api/users/"
-let drugsURL = "http://localhost:63075/api/drugs/"
-let avatarURL = "https://api.adorable.io/avatars/285/"
+const usersURL = "http://localhost:63075/api/users/"
+const drugsURL = "http://localhost:63075/api/drugs/"
+const avatarURL = "https://api.adorable.io/avatars/170/"
 
 module.exports = (server) => 
 {
@@ -114,7 +114,7 @@ module.exports = (server) =>
                 })
 
                 // 3. Save the search info to database 
-                let drug = {
+                const drug = {
                     Name: data.search
                 }
 

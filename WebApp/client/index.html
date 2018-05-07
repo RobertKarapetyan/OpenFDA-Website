@@ -1,110 +1,96 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
-
 <head>
-   <meta charset="UTF-8">
-   <title>Open FDA App</title>
+    <meta charset="UTF-8">
+    <title>Open FDA App</title>
+    <link rel="shortcut icon" href="img/fda.gif" />
+    <!-- Import Google Fonts -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Rajdhani:400,700" rel="stylesheet">
+    <!-- Import materialize.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
+    <!-- Import custom css -->
+    <link rel="stylesheet" href="css/style.css">
+    <style>
 
-   <link rel="shortcut icon" href="img/fda.gif" />
-   <!-- Import Google Fonts -->
-   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-   <link href="https://fonts.googleapis.com/css?family=Rajdhani:400,700" rel="stylesheet">
-   <!-- Import materialize.css -->
-   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
-   <!-- Import custom css -->
-   <link rel="stylesheet" href="css/style.css">
-
-   <style>
-      [v-cloak] {
-         display: none;
-      }
-   </style>
+        [v-cloak] {
+            display: none;
+        }
+    </style>
 </head>
-
 <body>
-    
-   <div id="chat-app">
-        {{errorMessage}}
 
-      <div class="row">
+    <div id="chat-app">
+        <div class="row">
+            <!-- users column -->
+            <div class="col s3">
+                <!-- active users component-->
+                <welcome-component v-bind:user="user"></welcome-component>
 
-         <!-- users column -->
-         <div class="col s3">
-            <!-- active users component-->
-            <welcome-component v-bind:user="user"></welcome-component>
-           
-            <br/>
-            <h4 v-if="recentSearches.length != 0">
-              &nbsp Recent Searches
-            </h4>
-
-            <ul>
-              <li
-                  v-for="item in recentSearches"
-              >               
-              &nbsp {{item}}
-              </li>
-          </ul>
-
-            <div v-show="!loggedIn">
-                &nbsp <img src="img/banner.jpg">
+                <br />
+        <!-- 5/1/2018 added div, drugs image for item in recentSearches-->
+                <div style="text-align:left">
+                    <h4 v-if="recentSearches.length != 0">
+                        &nbsp; Recent Searches
+                    </h4>
+                    <ul>
+                        <li v-for="item in recentSearches">
+                            &nbsp; &nbsp;<img class="image is-10x10" style="width:30px" src="../img/drugs.png">  &nbsp; {{item}}
+                        </li>
+                    </ul>
+                </div>
+        <!-- END -- 5/1/2018 added div, drugs image for item in recentSearches-->
+        <!-- 5/1/2018 center the banner, move errorMessage above the username and password fields-->
+                <div v-show="!loggedIn" class="u-full-width">
+                    &nbsp; <img src="img/banner.jpg" class="center-block">
+                </div>
+                <div class="user-login" v-show="!loggedIn">
+                    <h5 class="failed">{{errorMessage}}</h5>
+        <!-- END -- 5/1/2018 center the banner, move errorMessage above the username and password fields-->
+                    <input v-model="userName" placeholder="name" type="text" class="u-full-width">
+                    <br />
+                    <input v-model="password" placeholder="password" type="text" class="u-full-width">
+                    <br />
+                    <br />
+                    <button v-on:click="joinUser" :disabled="!userName" class="btn-small waves-effect waves-light" type="submit">
+                        Sign Up
+                    </button>
+                    &nbsp &nbsp
+                    <button v-on:click="validateUser" :disabled="!password" class="btn-small waves-effect waves-light" type="submit">
+                        Login
+                    </button>
+                </div>
+                <!-- end user join -->
             </div>
 
-            <div class="user-login" v-show="!loggedIn">
-               <input v-model="userName" placeholder="name" type="text" class="u-full-width">
-               <br/>
-               <input v-model="password" placeholder="password" type="text" class="u-full-width">
-               
-                <br/>
-                <br/>
-               <button v-on:click="joinUser" :disabled="!userName" class="btn-small waves-effect waves-light" type="submit">
-                  Sign Up 
-               </button>
-               &nbsp &nbsp 
-               <button v-on:click="validateUser" :disabled="!password" class="btn-small waves-effect waves-light" type="submit">
-                  Login 
-               </button>
+            <!-- drugName box column-->
+            <div class="col s9" v-show="loggedIn">
+                <!-- chat box -->
+                <records-component v-bind:content="list"></records-component>
+                <ul>
+        <!-- 5/1/2018 changed background-color and item font color -->
+                    <li v-for="item in list"
+                        :key="item.id">
+                        <p v-if="item.selected" style="background-color:whitesmoke">
+                            <span v-html="item.text" style="color:rebeccapurple"></span>
+                        </p>
+                    </li>
+        <!-- END -- 5/1/2018 changed background-color and item font color -->
+                </ul>
+                
+                <!--v-if="item.selected"-->
+                <!-- start form to send new drugName to chat box -->
+                <div class="controls" class="field has-addons">
+                    <input v-model="drugName" placeholder="write drugName" type="text" class="u-full-width">
+                    <button v-on:click="search" :disabled="!drugName" class="btn-small waves-effect waves-light" type="submit">
+                        <i class="material-icons left">send</i>search
+                    </button>
+                </div>
             </div>
-            <!-- end user join -->
-         </div>
-
-
-         <!-- drugName box column-->
-         <div class="col s9" v-show="loggedIn">
-
-          
-            <!-- chat box -->
-            <records-component v-bind:content="list"></records-component>
-           
-              <ul>
-                <li
-                    v-for="item in list"
-                    :key="item.id"
-                >
-                    <p v-if="item.selected" class="white">
-                      <span v-html="item.text"></span>
-                    </p>
-                </li>
-            </ul>
-            
-              
-         
-              <!--v-if="item.selected"-->
-
-            <!-- start form to send new drugName to chat box -->
-            <div class="controls" class="field has-addons">
-               <input v-model="drugName" placeholder="write drugName" type="text" class="u-full-width">
-               <button v-on:click="search" :disabled="!drugName" class="btn-small waves-effect waves-light" type="submit">
-                  <i class="material-icons left">send</i>search
-               </button>
-            </div>
-         </div>
-      </div>
-   </div>
-
-   <script type="text/javascript" src="https://unpkg.com/vue@2.5.15/dist/vue.min.js"></script>
-   <script type="text/javascript" src="https://unpkg.com/socket.io-client@2.1.0/dist/socket.io.js"></script>
-   <script type="text/javascript" src="app.js"></script>
+        </div>
+    </div>
+    <script type="text/javascript" src="https://unpkg.com/vue@2.5.15/dist/vue.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/socket.io-client@2.1.0/dist/socket.io.js"></script>
+    <script type="text/javascript" src="app.js"></script>
 </body>
-
 </html>

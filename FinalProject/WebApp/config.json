@@ -1,0 +1,4 @@
+﻿{
+  "url": "https://api.fda.gov/drug/event.json?",
+  "dbUrl": "http://localhost:63075/api/users/"
+}

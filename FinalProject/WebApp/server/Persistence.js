@@ -1,4 +1,6 @@
 const request = require('request')
+const superagent = require('superagent')
+const http = require('http');
 var synq = require('sync-request');
 
 exports.get_request = (url) => {

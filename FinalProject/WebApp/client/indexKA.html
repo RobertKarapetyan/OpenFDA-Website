@@ -1,0 +1,83 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <meta charset="UTF-8">
+   <title>Open FDA App</title>
+
+   <link rel="shortcut icon" href="img/fda.gif" />
+   <!-- Import Google Fonts -->
+   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+   <link href="https://fonts.googleapis.com/css?family=Rajdhani:400,700" rel="stylesheet">
+   <!-- Import materialize.css -->
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
+   <!-- Import custom css -->
+   <link rel="stylesheet" href="css/style.css">
+
+   <style>
+      [v-cloak] {
+         display: none;
+      }
+   </style>
+</head>
+
+<body>
+    
+    <div id="chat-app">
+        <div class="row">
+            <!-- users column -->
+            <div class="col s3">
+                    <div v-show="!loggedIn">
+                        <img src="img/fda.gif" class="center-block" style="border-radius:27%" /><br/>
+                        <p class="center header-font">FDA Drug Reaction Search</p>
+                    </div>
+                <!--<header-component v-show="!loggedIn"></header-component>-->
+                <!-- active users component-->
+                <welcome-component v-show="loggedIn" v-bind:user="user"></welcome-component>
+                <!--<users-component v-bind:users="users"></users-component>-->
+                <!-- start user join -->
+                <div class="user-login" v-show="!loggedIn">
+                    <h5 class="failed">{{errorMessage}}</h5>
+                    <input v-model="userName" placeholder="name" type="text" class="u-full-width">
+                    <br />
+                    <input v-model="password" placeholder="password" type="text" class="u-full-width">
+                    <button v-on:click="validateUser" :disabled="!password" class="btn-small waves-effect waves-light" type="submit">
+                        Login
+                    </button>
+                    <button v-on:click="joinUser" :disabled="!userName" class="btn-small waves-effect waves-light" type="submit">
+                        Sign Up
+                    </button>
+                   
+                    <br />
+                </div>
+                <div class="user-login" v-show="loggedIn">
+                    <button v-on:click="logout" class="btn-small waves-effect waves-light" type="submit">
+                        Log Out
+                    </button>
+                    </div>
+                    <!-- end user join -->
+
+                </div>
+
+            <!-- message box column-->
+            <div class="col s9" v-show="loggedIn">
+
+                <!-- chat box -->
+                <chat-component v-bind:content="records"></chat-component>
+                <!-- start form to send new message to chat box -->
+                <div class="controls" class="field has-addons">
+                    <input v-model="message" placeholder="Enter a Drug Name" type="text" class="u-full-width">
+                    <button v-on:click="search" :disabled="!message" class="btn-small waves-effect waves-light" type="submit">
+                        <i class="material-icons left">send</i>search
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+   <script type="text/javascript" src="https://unpkg.com/vue@2.5.15/dist/vue.min.js"></script>
+   <script type="text/javascript" src="https://unpkg.com/socket.io-client@2.1.0/dist/socket.io.js"></script>
+   <script type="text/javascript" src="app.js"></script>
+</body>
+
+</html>
